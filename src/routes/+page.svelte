@@ -28,10 +28,27 @@
 		const form = event.currentTarget;
 		const formData = new FormData(form);
 
+		const phone = String(formData.get('phone') || '').trim();
+		const phoneDigits = phone.replace(/\D/g, '');
+		
+		if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+			errorMessage = 'Телефон должен содержать 10-11 цифр';
+			loading = false;
+			return;
+		}
+
+		// Normalize phone to format 79991234567
+		let normalizedPhone = phoneDigits;
+		if (normalizedPhone.startsWith('8') && normalizedPhone.length === 11) {
+			normalizedPhone = '7' + normalizedPhone.slice(1);
+		} else if (normalizedPhone.length === 10) {
+			normalizedPhone = '7' + normalizedPhone;
+		}
+
 		const payload = {
 			secretKey: secretKeyInput,
 			clientName: String(formData.get('client_name') || '').trim(),
-			phone: String(formData.get('phone') || '').trim(),
+			phone: normalizedPhone,
 			address: String(formData.get('address') || '').trim() || null,
 			comment: String(formData.get('comment') || '').trim() || null
 		};
