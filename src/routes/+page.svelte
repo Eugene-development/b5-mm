@@ -30,7 +30,7 @@
 
 		const phone = String(formData.get('phone') || '').trim();
 		const phoneDigits = phone.replace(/\D/g, '');
-		
+
 		if (phoneDigits.length < 10 || phoneDigits.length > 11) {
 			errorMessage = 'Телефон должен содержать 10-11 цифр';
 			loading = false;
@@ -169,7 +169,7 @@
 						disabled={loading}
 					>
 						{#if loading}Отправка...{/if}
-						{#if !loading}Отправить заявку{/if}
+						{#if !loading}Отправить{/if}
 					</button>
 				</div>
 			</form>
