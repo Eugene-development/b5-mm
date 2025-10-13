@@ -86,7 +86,7 @@
 			<form onsubmit={handleSubmit} novalidate>
 				<div class="mb-4">
 					<label class="block text-sm font-medium text-gray-300" for="secret_key"
-						>Ваш ключ агента (он в личном кабинете) <span class="text-red-400">*</span></label
+						>Ключ агента (он в профиле личного кабинета) <span class="text-red-400">*</span></label
 					>
 					<input
 						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
