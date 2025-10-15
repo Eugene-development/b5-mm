@@ -1,5 +1,6 @@
 <script>
 	import { publicSubmit } from '$lib/api/projects.js';
+	import { ulid } from 'ulid';
 
 	let secretKeyInput = $state('');
 	let loading = $state(false);
@@ -45,8 +46,11 @@
 			normalizedPhone = '7' + normalizedPhone;
 		}
 
+		const clientId = ulid();
+
 		const payload = {
 			secretKey: secretKeyInput,
+			clientId: clientId,
 			clientName: String(formData.get('client_name') || '').trim(),
 			phone: normalizedPhone,
 			address: String(formData.get('address') || '').trim() || null,

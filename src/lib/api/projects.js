@@ -5,6 +5,7 @@ import { post, ApiError } from '$lib/api/client.js';
  * Submit a project publicly using a user's secret key
  * @param {{
  *  secretKey: string,
+ *  clientId: string,
  *  clientName: string,
  *  phone: string,
  *  address?: string,
@@ -18,6 +19,7 @@ export async function publicSubmit(payload) {
 			API_CONFIG.endpoints.publicProjectSubmit,
 			{
 				secret_key: payload.secretKey,
+				client_id: payload.clientId,
 				client_name: payload.clientName,
 				phone: payload.phone,
 				address: payload.address ?? null,
