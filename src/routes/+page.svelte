@@ -90,10 +90,10 @@
 			<form onsubmit={handleSubmit} novalidate>
 				<div class="mb-4">
 					<label class="block text-sm font-medium text-gray-300" for="secret_key"
-						>Ключ агента (он в профиле личного кабинета) <span class="text-red-400">*</span></label
+						>Секретный ключ агента (он в профиле) <span class="text-red-400">*</span></label
 					>
 					<input
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
 						type="text"
 						name="secret_key"
 						id="secret_key"
@@ -115,7 +115,7 @@
 						>Имя клиента <span class="text-red-400">*</span></label
 					>
 					<input
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
 						type="text"
 						name="client_name"
 						id="client_name"
@@ -129,7 +129,7 @@
 						>Телефон клиента <span class="text-red-400">*</span></label
 					>
 					<input
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
 						type="tel"
 						name="phone"
 						id="phone"
@@ -145,7 +145,7 @@
 						>Адрес объекта (не обязательно)</label
 					>
 					<input
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
 						type="text"
 						name="address"
 						id="address"
@@ -158,7 +158,7 @@
 						>Комментарий (желательно)</label
 					>
 					<textarea
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-3 text-white sm:p-2"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
 						rows="3"
 						name="comment"
 						id="comment"
