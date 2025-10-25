@@ -6,11 +6,33 @@
 	let loading = $state(false);
 	let successMessage = $state('');
 	let errorMessage = $state('');
+	let isKeyFocused = $state(false);
+
+	// Mask secret key showing only last 4 characters
+	function maskSecretKey(key) {
+		if (!key || key.length <= 4) {
+			return key || '';
+		}
+		const visiblePart = key.slice(-4);
+		const maskedPart = '*'.repeat(key.length - 4);
+		return maskedPart + visiblePart;
+	}
+
+	// Display value for the input (masked when not focused)
+	let displayValue = $derived(isKeyFocused ? secretKeyInput : maskSecretKey(secretKeyInput));
 
 	function handleSecretKeyInput(event) {
 		const rawValue = String(event.target.value || '');
 		const upperSanitized = rawValue.toUpperCase().replace(/[^0-9A-HJKMNP-TV-Z]/g, '');
 		secretKeyInput = upperSanitized.slice(0, 26);
+	}
+
+	function handleKeyFocus() {
+		isKeyFocused = true;
+	}
+
+	function handleKeyBlur() {
+		isKeyFocused = false;
 	}
 
 	async function handleSubmit(event) {
@@ -93,12 +115,14 @@
 						>Секретный ключ агента (он в профиле) <span class="text-red-400">*</span></label
 					>
 					<input
-						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white"
+						class="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 font-mono text-white"
 						type="text"
 						name="secret_key"
 						id="secret_key"
-						bind:value={secretKeyInput}
+						value={displayValue}
 						oninput={handleSecretKeyInput}
+						onfocus={handleKeyFocus}
+						onblur={handleKeyBlur}
 						pattern="^[0-9A-HJKMNP-TV-Z]{26}$"
 						minlength="26"
 						maxlength="26"
@@ -108,6 +132,11 @@
 						placeholder="01HZY8Y9G5F8M9B6W7K3NQ4Z8X"
 						required
 					/>
+					{#if secretKeyInput && !isKeyFocused}
+						<p class="mt-1 text-xs text-gray-400">
+							Ключ скрыт для безопасности. Кликните для редактирования.
+						</p>
+					{/if}
 				</div>
 
 				<div class="mb-4">
