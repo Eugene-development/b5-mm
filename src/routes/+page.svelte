@@ -7,6 +7,7 @@
 	let successMessage = $state('');
 	let errorMessage = $state('');
 	let isKeyFocused = $state(false);
+	let isIncognito = $state(false);
 
 	// Mask secret key showing only last 4 characters
 	function maskSecretKey(key) {
@@ -76,7 +77,8 @@
 			clientName: String(formData.get('client_name') || '').trim(),
 			phone: normalizedPhone,
 			address: String(formData.get('address') || '').trim() || null,
-			comment: String(formData.get('comment') || '').trim() || null
+			comment: String(formData.get('comment') || '').trim() || null,
+			isIncognito: isIncognito
 		};
 
 		const result = await publicSubmit(payload);
@@ -85,6 +87,7 @@
 			successMessage = result.message || 'Заявка успешно отправлена';
 			form.reset();
 			secretKeyInput = '';
+			isIncognito = false;
 		} else {
 			errorMessage = result.message || 'Ошибка отправки заявки';
 		}
@@ -139,50 +142,67 @@
 				{/if}
 
 				<form onsubmit={handleSubmit} novalidate class="space-y-5">
-					<!-- Secret Key -->
-					<div class="group/field">
-						<label class="mb-2 flex items-center gap-2 text-sm font-medium text-slate-300" for="secret_key">
-							<svg class="h-4 w-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-							</svg>
-							Ваш секретный ключ
-							<span class="text-red-400">*</span>
-						</label>
-						<div class="relative">
-							<input
-								class="w-full rounded-xl border border-slate-600/50 bg-slate-800/50 px-4 py-3 font-mono text-white placeholder-slate-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
-								type="text"
-								name="secret_key"
-								id="secret_key"
-								value={displayValue}
-								oninput={handleSecretKeyInput}
-								onfocus={handleKeyFocus}
-								onblur={handleKeyBlur}
-								pattern="^[0-9A-HJKMNP-TV-Z]{26}$"
-								minlength="26"
-								maxlength="26"
-								inputmode="latin"
-								autocapitalize="characters"
-								autocomplete="off"
-								placeholder="01HZY8Y9G5F8M9B6W7K3NQ4Z8X"
-								required
-							/>
+					<!-- Secret Key and Incognito Row -->
+					<div class="flex gap-4 items-start">
+						<!-- Secret Key -->
+						<div class="group/field flex-1">
+							<label class="mb-2 flex items-center gap-2 text-sm font-medium text-slate-300" for="secret_key">
+								<svg class="h-4 w-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+								</svg>
+								Ваш секретный ключ
+								<span class="text-red-400">*</span>
+							</label>
+							<div class="relative">
+								<input
+									class="w-full rounded-xl border border-slate-600/50 bg-slate-800/50 px-4 py-3 font-mono text-white placeholder-slate-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+									type="text"
+									name="secret_key"
+									id="secret_key"
+									value={displayValue}
+									oninput={handleSecretKeyInput}
+									onfocus={handleKeyFocus}
+									onblur={handleKeyBlur}
+									pattern="^[0-9A-HJKMNP-TV-Z]{26}$"
+									minlength="26"
+									maxlength="26"
+									inputmode="latin"
+									autocapitalize="characters"
+									autocomplete="off"
+									placeholder="01HZY8Y9G5F8M9B6W7K3NQ4Z8X"
+									required
+								/>
+								{#if secretKeyInput && !isKeyFocused}
+									<div class="absolute right-3 top-1/2 -translate-y-1/2">
+										<svg class="h-5 w-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+										</svg>
+									</div>
+								{/if}
+							</div>
 							{#if secretKeyInput && !isKeyFocused}
-								<div class="absolute right-3 top-1/2 -translate-y-1/2">
-									<svg class="h-5 w-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+								<p class="mt-2 flex items-center gap-1 text-xs text-slate-500">
+									<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
-								</div>
+									Ключ скрыт для безопасности
+								</p>
 							{/if}
 						</div>
-						{#if secretKeyInput && !isKeyFocused}
-							<p class="mt-2 flex items-center gap-1 text-xs text-slate-500">
-								<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-								</svg>
-								Ключ скрыт для безопасности
-							</p>
-						{/if}
+
+						<!-- Incognito Checkbox -->
+						<div class="group/field shrink-0 pt-8">
+							<label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-600/50 bg-slate-800/50 px-4 py-3 transition-all duration-200 hover:border-slate-500/50 hover:bg-slate-800" for="is_incognito">
+								<input
+									class="h-5 w-5 cursor-pointer rounded border-slate-500 bg-slate-700 text-purple-500 transition-colors focus:ring-2 focus:ring-purple-500/20 focus:ring-offset-0"
+									type="checkbox"
+									name="is_incognito"
+									id="is_incognito"
+									bind:checked={isIncognito}
+								/>
+								<span class="text-sm font-medium text-slate-300">Инкогнито</span>
+							</label>
+						</div>
 					</div>
 
 					<!-- Client Name -->

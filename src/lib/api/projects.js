@@ -10,6 +10,7 @@ import { post, ApiError } from '$lib/api/client.js';
  *  phone: string,
  *  address?: string,
  *  comment?: string,
+ *  isIncognito?: boolean,
  * }} payload
  * @returns {Promise<{success: boolean, message: string, errors?: Record<string, string[]>}>}
  */
@@ -23,7 +24,8 @@ export async function publicSubmit(payload) {
 				client_name: payload.clientName,
 				phone: payload.phone,
 				address: payload.address ?? null,
-				comment: payload.comment ?? null
+				comment: payload.comment ?? null,
+				is_incognito: payload.isIncognito ?? false
 			},
 			{},
 			false // public endpoint, no auth
