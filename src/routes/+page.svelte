@@ -119,7 +119,7 @@
 		const result = await publicSubmit(payload);
 
 		if (result.success) {
-			successMessage = result.message || 'Заявка успешно отправлена';
+			successMessage = result.message || 'Проект отправлен в работу куратору';
 			form.reset();
 			secretKeyInput = '';
 			isIncognito = false;

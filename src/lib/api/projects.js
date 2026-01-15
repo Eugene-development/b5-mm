@@ -33,7 +33,7 @@ export async function publicSubmit(payload) {
 
 		return {
 			success: !!response.success,
-			message: response.message || 'Заявка успешно отправлена'
+			message: response.message || 'Проект отправлен в работу куратору'
 		};
 	} catch (error) {
 		if (error instanceof ApiError) {
